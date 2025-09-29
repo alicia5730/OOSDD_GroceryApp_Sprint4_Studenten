@@ -1,0 +1,57 @@
+name: Build & Test MAUI App
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      # (Optional) Speed up restores
+      - name: Cache NuGet
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      # Install MAUI workloads needed to build Android/Windows
+      - name: Install MAUI workloads
+        run: |
+          dotnet workload install maui-android maui-windows --ignore-failed-sources
+          dotnet --info
+
+      # Restore dependencies (solution or specific projects)
+      - name: Restore (App)
+        run: dotnet restore Grocery.App/Grocery.App.csproj
+
+      - name: Restore (Tests)
+        run: |
+          if (Test-Path "TestCore/TestCore.csproj") { dotnet restore TestCore/TestCore.csproj }
+
+      # ---------- Run unit tests & upload results ----------
+      - name: Run Unit Tests
+        if: ${{ hashFiles('TestCore/TestCore.csproj') != '' }}
+        run: |
+          dotnet test TestCore/TestCore.csproj `
+            --configuration Release `
+            --logger "trx;LogFileName=test_results.trx" `
+            --results-directory ./TestResults
+
+      - name: Upload Test Results (.trx)
+        if: always()  # upload even if tests fail
+        uses: actions/upload-artifact@v4
+        with:
