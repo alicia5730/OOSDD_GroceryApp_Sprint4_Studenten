@@ -11,14 +11,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="43a4fe78-c2c8-4adf-a336-59b11b8c8b01" name="Changes" comment="" />
+    <list default="true" id="43a4fe78-c2c8-4adf-a336-59b11b8c8b01" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Grocery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Grocery/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Grocery.App/Views/BestSellingProductsView.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/Grocery.App/Views/BestSellingProductsView.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Grocery.Core/Services/GroceryListItemsService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Grocery.Core/Services/GroceryListItemsService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestCore/TestCore.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/TestCore/TestCore.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestCore/TestHelpers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestCore/TestHelpers.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DpaMonitoringSettings">
+    <option name="firstShow" value="false" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/.nuget/packages/microsoft.windowsappsdk/1.5.240802000/include/DeploymentManagerAutoInitializer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4ab0184282dc4aad9319467913ef83f684910/da/0e5c9596/IGrouping`2.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="InvalidFacetManager">
     <ignored-facets>
@@ -39,20 +52,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "UWP.Grocery.App.executor": "Run",
+    "git-widget-placeholder": "feature__uc11",
+    "iOS.Grocery.App.executor": "Run",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="iOS.Grocery.App">
+}]]></component>
+  <component name="RunManager" selected="UWP.Grocery.App">
     <configuration name="Grocery.App: Windows Machine" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Grocery.App/Grocery.App.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net8.0-windows10.0.19041.0" />
@@ -111,6 +128,7 @@
       <option name="presentableId" value="Default" />
       <updated>1759170054331</updated>
       <workItem from="1759170062004" duration="822000" />
+      <workItem from="1759225697979" duration="7743000" />
     </task>
     <servers />
   </component>
