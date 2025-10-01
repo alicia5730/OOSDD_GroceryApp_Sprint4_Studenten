@@ -5,7 +5,7 @@ namespace Grocery.Core.Data.Repositories
 {
     public class GroceryListItemsRepository : IGroceryListItemsRepository
     {
-        private readonly List<GroceryListItem> groceryListItems;
+        private readonly List<GroceryListItem> groceryListItems = new();
 
         public GroceryListItemsRepository()
         {
@@ -36,9 +36,16 @@ namespace Grocery.Core.Data.Repositories
             return Get(item.Id);
         }
 
+
         public GroceryListItem? Delete(GroceryListItem item)
         {
-            throw new NotImplementedException();
+            var existing = groceryListItems.FirstOrDefault(x => x.Id == item.Id);
+            if (existing != null)
+            {
+                groceryListItems.Remove(existing);
+                return existing;
+            }
+            return null;
         }
 
         public GroceryListItem? Get(int id)

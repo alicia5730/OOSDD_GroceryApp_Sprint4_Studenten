@@ -5,7 +5,8 @@
              xmlns:vm="clr-namespace:Grocery.App.ViewModels"
              x:Class="Grocery.App.Views.GroceryListItemsView"
              x:DataType="vm:GroceryListItemsViewModel"
-             Title="GroceryListItemsView">
+             Title="GroceryListItemsView"
+             x:Name="ThisPage">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Wijzig kleur" Command="{Binding ChangeColorCommand}" IconImageSource="{FontImage Glyph='&#xf30c;', Color=Black, Size=22}" />
@@ -40,12 +41,22 @@
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" Text="{Binding Product.Name}" VerticalOptions="Center"/>
                             <Label Grid.Column="1" Text="{Binding Amount}" VerticalOptions="Center" HorizontalOptions="End" Margin="0,0,10,0"/>
-                            <Grid Grid.Column="2">
-                                <Image Source="plus.png" WidthRequest="15" HeightRequest="15"/>
-                            </Grid>
-                            <Grid Grid.Column="3">
-                                <Image Source="min.png" WidthRequest="15" HeightRequest="15"/>
-                            </Grid>
+                            
+                            <Image Grid.Column="2" Source="plus.png" WidthRequest="15" HeightRequest="15" HorizontalOptions="Center" VerticalOptions="Center">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={x:Reference ThisPage}, Path=BindingContext.IncreaseAmountCommand}" 
+                                        CommandParameter="{Binding .}" />
+                                </Image.GestureRecognizers>
+                            </Image>
+
+                            <Image Grid.Column="3" Source="min.png" WidthRequest="15" HeightRequest="15" HorizontalOptions="Center" VerticalOptions="Center">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={x:Reference ThisPage}, Path=BindingContext.DecreaseAmountCommand}" 
+                                        CommandParameter="{Binding .}" />
+                                </Image.GestureRecognizers>
+                            </Image>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
