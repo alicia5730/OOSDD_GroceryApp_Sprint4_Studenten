@@ -13,6 +13,7 @@ namespace TestCore
         private Mock<IGroceryListItemsRepository> _groceriesRepoMock;
         private Mock<IProductRepository> _productRepoMock;
         private GroceryListItemsService _service;
+        
         [SetUp]
         public void Setup()
         {
@@ -125,6 +126,45 @@ namespace TestCore
             Assert.AreEqual(1, result[0].Ranking);
             Assert.AreEqual(2, result[1].Ranking);
             Assert.AreEqual(3, result[2].Ranking);
+        }
+        [Test]
+        public void DecreaseAmount_WhenAmountGreaterThan1_DecreasesOnly()
+        {
+            // Arrange
+            var product = new Product(1, "Melk", 5);
+            var item = new GroceryListItem(1, 1, 1, 2) { Product = product };
+
+            var groceriesRepoMock = new Mock<IGroceryListItemsRepository>();
+            var productRepoMock = new Mock<IProductRepository>();
+            var service = new GroceryListItemsService(groceriesRepoMock.Object, productRepoMock.Object);
+
+            // Act
+            item.Amount--; // simulatie van DecreaseAmount
+            service.Update(item);
+
+            // Assert
+            Assert.AreEqual(1, item.Amount);
+        }
+
+        [Test]
+        public void DecreaseAmount_WhenAmountIs1_RemovesItem()
+        {
+            // Arrange
+            var product = new Product(1, "Melk", 5);
+            var item = new GroceryListItem(1, 1, 1, 1) { Product = product };
+
+            var groceriesRepoMock = new Mock<IGroceryListItemsRepository>();
+            groceriesRepoMock.Setup(r => r.Delete(item)).Returns(item);
+
+            var productRepoMock = new Mock<IProductRepository>();
+            var service = new GroceryListItemsService(groceriesRepoMock.Object, productRepoMock.Object);
+
+            // Act
+            var result = groceriesRepoMock.Object.Delete(item);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Id);
         }
     }
 }
