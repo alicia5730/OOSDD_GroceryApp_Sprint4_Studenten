@@ -32,8 +32,8 @@ namespace Grocery.App.ViewModels
             Client? authenticatedClient = _authService.Login(Email, Password);
             if (authenticatedClient != null)
             {
+                _global.Client = authenticatedClient;   // ⬅️ opslaan
                 LoginMessage = $"Welkom {authenticatedClient.Name}!";
-                _global.Client = authenticatedClient;
                 Application.Current.MainPage = new AppShell();
             }
             else
@@ -41,5 +41,6 @@ namespace Grocery.App.ViewModels
                 LoginMessage = "Ongeldige inloggegevens.";
             }
         }
+
     }
 }
