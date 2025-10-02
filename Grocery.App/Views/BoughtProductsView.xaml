@@ -15,34 +15,27 @@
             <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Picker Grid.Column="0" Grid.Row="0" Margin="10,0,0,0"
-                Title="Selecteer een product"
-                ItemsSource="{Binding Products}"
-                ItemDisplayBinding="{Binding }"
-                SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
-                BackgroundColor="{StaticResource Primary}"
-                TextColor="{StaticResource Secondary}" />
-        
+        <Picker Grid.Column="0" Grid.Row="0" Margin="10,0,0,0" Title="Klik op onderstaand pijltje om een product te selecteren:"
+        ItemsSource="{Binding Products}"
+        SelectedItem="{Binding SelectedProduct, Mode=TwoWay}" 
+        SelectedIndexChanged="Picker_SelectedIndexChanged"
+        BackgroundColor="{StaticResource Primary}"
+            TextColor="{StaticResource Secondary}">
+        </Picker>
         <Border Grid.Row="1" Grid.Column="0" Stroke="#C49B33" StrokeThickness="4" Padding="5" Margin="5" HorizontalOptions="Center">
             <CollectionView ItemsSource="{Binding BoughtProductsList}" Margin="5" HorizontalOptions="End" SelectionMode="Single">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
                 </CollectionView.ItemsLayout>
-                
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="m:BoughtProducts">
-                        <Grid Padding="10">
+                    <DataTemplate x:DataType="m:BoughtProducts" >
+                        <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text="{Binding Client.Name}" FontAttributes="Bold"/>
-                            <Label Grid.Column="1" Text="{Binding GroceryList.Name}" />
-                            <Label Grid.Column="2" Text="{Binding Product.Stock}" /> <!-- of Amount -->
-
+                            <!-- Toon hier de naam van de Client naam van de boodschappenlijst -->
                         </Grid>
-                        
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
                 <CollectionView.EmptyView>
