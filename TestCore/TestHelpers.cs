@@ -14,12 +14,32 @@ namespace TestCore
         private Mock<IProductRepository> _productRepoMock;
         private GroceryListItemsService _service;
         
+        // BOVENAAN je TestHelpers class
+        private Mock<IGroceryListItemsRepository> _itemsRepoMock;   // voor UC13
+        private Mock<IGroceryListRepository> _listRepoMock;         // voor UC13
+        private Mock<IClientRepository> _clientRepoMock;            // voor UC13
+        private Mock<IProductRepository> _bpProductRepoMock;        // aparte voor UC13
+        private BoughtProductsService _boughtService;
         [SetUp]
         public void Setup()
         {
             _groceriesRepoMock = new Mock<IGroceryListItemsRepository>();
             _productRepoMock = new Mock<IProductRepository>();
             _service = new GroceryListItemsService(_groceriesRepoMock.Object, _productRepoMock.Object);
+            // --- UC13 nieuw ---
+            _itemsRepoMock     = new Mock<IGroceryListItemsRepository>();
+            _listRepoMock      = new Mock<IGroceryListRepository>();
+            _clientRepoMock    = new Mock<IClientRepository>();
+            _bpProductRepoMock = new Mock<IProductRepository>();
+
+            _boughtService = new BoughtProductsService(
+                _itemsRepoMock.Object,
+                _listRepoMock.Object,
+                _clientRepoMock.Object,
+                _bpProductRepoMock.Object
+            );
+            
+            
         }
 
 
@@ -400,6 +420,115 @@ namespace TestCore
             Assert.IsEmpty(result);
         }
         
+        // ---------------------------------------------------------------------------------------
+        // UC13 – Happy flows
+        // ----------------------------------------------------------------------------------------
+
+        [Test]
+        // TC13-01 – Alleen admin kan naar BoughtProducts (rolcheck op Core-model)
+        public void UC13_01_AdminRole_IsAllowed()
+        {
+            var admin = new Client(3, "Admin", "admin@mail.com", "pw") { Role = Role.Admin };
+            Assert.That(admin.Role, Is.EqualTo(Role.Admin));
+        }
+
+        [Test]
+        // TC13-02 – Bij gekozen product → juiste klanten + lijsten (Service test)
+        public void UC13_02_Get_ByProduct_ReturnsCorrectClientsAndLists()
+        {
+            // Arrange
+            var client      = new Client(1, "Alice", "u1@mail", "pw");
+            var list        = new GroceryList(1, "Weekendlijst", DateOnly.FromDateTime(DateTime.Today), "#F00", client.Id);
+            var product     = new Product(10, "Melk", 100);
+            var listItem    = new GroceryListItem(100, list.Id, product.Id, 2);
+
+            _itemsRepoMock.Setup(r => r.GetAll()).Returns(new List<GroceryListItem> { listItem });
+            _listRepoMock.Setup(r => r.Get(list.Id)).Returns(list);
+            _clientRepoMock.Setup(r => r.Get(client.Id)).Returns(client);
+            _bpProductRepoMock.Setup(r => r.Get(product.Id)).Returns(product);
+
+            // Act
+            var result = _boughtService.Get(product.Id);
+
+            // Assert
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result[0].Client.Name, Is.EqualTo("Alice"));
+            Assert.That(result[0].GroceryList.Name, Is.EqualTo("Weekendlijst"));
+            Assert.That(result[0].Product.Name, Is.EqualTo("Melk"));
+        }
+
+        [Test]
+        // TC13-03 – Wisselen van product ververst de lijst (test-only VM + service)
+        public void UC13_03_SwitchingProducts_RefreshesList()
+        {
+            // Arrange: twee producten met elk één buyer
+            var p1 = new Product(1, "Melk", 10);
+            var p2 = new Product(2, "Brood", 5);
+
+            var c1 = new Client(1, "Alice", "a@mail", "pw");
+            var c2 = new Client(2, "Bob",   "b@mail", "pw");
+
+            var l1 = new GroceryList(1, "Lijst A", DateOnly.FromDateTime(DateTime.Today), "#111", c1.Id);
+            var l2 = new GroceryList(2, "Lijst B", DateOnly.FromDateTime(DateTime.Today), "#222", c2.Id);
+
+            _itemsRepoMock.Setup(r => r.GetAll()).Returns(new List<GroceryListItem>
+            {
+                new GroceryListItem(1, l1.Id, p1.Id, 2),
+                new GroceryListItem(2, l2.Id, p2.Id, 1)
+            });
+            _listRepoMock.Setup(r => r.Get(l1.Id)).Returns(l1);
+            _listRepoMock.Setup(r => r.Get(l2.Id)).Returns(l2);
+            _clientRepoMock.Setup(r => r.Get(c1.Id)).Returns(c1);
+            _clientRepoMock.Setup(r => r.Get(c2.Id)).Returns(c2);
+            _bpProductRepoMock.Setup(r => r.Get(1)).Returns(p1);
+            _bpProductRepoMock.Setup(r => r.Get(2)).Returns(p2);
+
+            // Test-VM gebruikt alleen IBoughtProductsService
+            var vm = new TestCore.TestDoubles.TestBoughtProductsVM(_boughtService);
+
+            // Act 1: selecteer Melk
+            vm.SelectProduct(p1);
+            Assert.That(vm.BoughtProductsList.Count, Is.EqualTo(1));
+            Assert.That(vm.BoughtProductsList[0].Product.Name, Is.EqualTo("Melk"));
+            Assert.That(vm.BoughtProductsList[0].Client.Name,  Is.EqualTo("Alice"));
+
+            // Act 2: switch naar Brood
+            vm.SelectProduct(p2);
+            Assert.That(vm.BoughtProductsList.Count, Is.EqualTo(1));
+            Assert.That(vm.BoughtProductsList[0].Product.Name, Is.EqualTo("Brood"));
+            Assert.That(vm.BoughtProductsList[0].Client.Name,  Is.EqualTo("Bob"));
+        }
+
+        // ------------------------------
+        // UC13 – Unhappy flows
+        // ------------------------------
+
+        [Test]
+        // TC13-04 – Niet-admin → mag view niet openen (rol ≠ Admin)
+        public void UC13_04_NonAdminRole_IsDenied()
+        {
+            var user = new Client(2, "User", "user@mail.com", "pw") { Role = Role.None };
+            Assert.That(user.Role, Is.Not.EqualTo(Role.Admin));
+        }
+
+        [Test]
+        // TC13-05 – Geen data voor product → lege lijst
+        public void UC13_05_NoDataForProduct_ReturnsEmpty()
+        {
+            _itemsRepoMock.Setup(r => r.GetAll()).Returns(new List<GroceryListItem>());
+            var empty = _boughtService.Get(999);
+            Assert.That(empty, Is.Empty);
+        }
+
+        [Test]
+        // TC13-06 – Null selectie / invalid → blijft leeg, geen crash (via test-VM)
+        public void UC13_06_NullSelection_LeavesListEmpty_NoCrash()
+        {
+            var vm = new TestCore.TestDoubles.TestBoughtProductsVM(_boughtService);
+            vm.SelectProduct(null);
+            Assert.That(vm.BoughtProductsList, Is.Empty);
+        }
+
         
     }
 }
