@@ -52,6 +52,8 @@ jobs:
             --results-directory ./TestResults
 
       - name: Upload Test Results (.trx)
-        if: always()  # upload even if tests fail
+        if: success()
         uses: actions/upload-artifact@v4
         with:
+          name: test-results
+          path: ./TestResults
