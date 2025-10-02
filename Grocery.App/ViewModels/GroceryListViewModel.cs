@@ -10,24 +10,12 @@ namespace Grocery.App.ViewModels
     {
         public ObservableCollection<GroceryList> GroceryLists { get; set; }
         private readonly IGroceryListService _groceryListService;
-        private readonly GlobalViewModel _global;
 
-        public Client? Client => _global.Client;         
-        public GroceryListViewModel(IGroceryListService groceryListService, GlobalViewModel global) 
+        public GroceryListViewModel(IGroceryListService groceryListService) 
         {
             Title = "Boodschappenlijst";
             _groceryListService = groceryListService;
-            _global = global;
-
             GroceryLists = new(_groceryListService.GetAll());
-        }
-        [RelayCommand]
-        public async Task ShowBoughtProducts()
-        {
-            if (Client?.Role == Role.Admin)
-            {
-                await Shell.Current.GoToAsync(nameof(Views.BoughtProductsView));
-            }
         }
 
         [RelayCommand]

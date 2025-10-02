@@ -11,32 +11,20 @@ namespace Grocery.App.ViewModels
     {
         private readonly IBoughtProductsService _boughtProductsService;
 
-        [ObservableProperty] private Product? selectedProduct;
-        public ObservableCollection<BoughtProducts> BoughtProductsList { get; set; } = new();
+        [ObservableProperty]
+        Product selectedProduct;
+        public ObservableCollection<BoughtProducts> BoughtProductsList { get; set; } = [];
         public ObservableCollection<Product> Products { get; set; }
 
         public BoughtProductsViewModel(IBoughtProductsService boughtProductsService, IProductService productService)
         {
             _boughtProductsService = boughtProductsService;
             Products = new(productService.GetAll());
-            
-            foreach (var p in Products)
-            {
-                System.Diagnostics.Debug.WriteLine($"[VM] Product: {p?.Id} | {p?.Name} | {p?.GetType().FullName}");
-            }
-
         }
 
-        partial void OnSelectedProductChanged(Product? oldValue, Product? newValue)
+        partial void OnSelectedProductChanged(Product? oldValue, Product newValue)
         {
-            BoughtProductsList.Clear();
-            if (newValue != null)
-            {
-                foreach (var bp in _boughtProductsService.Get(newValue.Id))
-                {
-                    BoughtProductsList.Add(bp);
-                }
-            }        
+            //Zorg dat de lijst BoughtProductsList met de gegevens die passen bij het geselecteerde product. 
         }
 
         [RelayCommand]
