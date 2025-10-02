@@ -11,7 +11,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2f6bcdf9-95d7-4f5a-acaa-186bffce2f4a" name="Changes" comment="" />
+    <list default="true" id="2f6bcdf9-95d7-4f5a-acaa-186bffce2f4a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Grocery.Core/Models/Role.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Grocery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Grocery/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Grocery.App/MauiProgram.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Grocery.App/MauiProgram.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Grocery.App/ViewModels/BoughtProductsViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Grocery.App/ViewModels/BoughtProductsViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Grocery.App/ViewModels/GroceryListViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Grocery.App/ViewModels/GroceryListViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Grocery.App/Views/BoughtProductsView.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/Grocery.App/Views/BoughtProductsView.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Grocery.App/Views/GroceryListsView.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/Grocery.App/Views/GroceryListsView.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Grocery.Core.Data/Repositories/ClientRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Grocery.Core.Data/Repositories/ClientRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Grocery.Core/Models/Client.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Grocery.Core/Models/Client.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Grocery.Core/Models/Product.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Grocery.Core/Models/Product.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Grocery.Core/Services/BoughtProductsService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Grocery.Core/Services/BoughtProductsService.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,13 +37,21 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$USER_HOME$/.nuget/packages/microsoft.windowsappsdk/1.5.240802000/include/DeploymentManagerAutoInitializer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Temp/SourceGeneratedDocuments/F9D3CFB2A4A41D08D15EA86E/CommunityToolkit.Mvvm.SourceGenerators/CommunityToolkit.Mvvm.SourceGenerators.ObservablePropertyGenerator/Grocery.Core.Models.Model.g.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4ab0184282dc4aad9319467913ef83f684910/da/0e5c9596/IGrouping`2.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b7208b3f72528d22781d25fde9a55271bdf2b5aade4f03b1324579a25493cd8/List.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f7e838f3c047ee76488fa4c2b9b1bffb2b33b04a2780de4664de937e024e97/CallSiteFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Grocery.Core/Models/Role.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="InvalidFacetManager">
     <ignored-facets>
       <facet id="Grocery.App/invalid/Android Facet - Grocery.App" />
     </ignored-facets>
   </component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="Toolset" />
   </component>
@@ -46,23 +66,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;UWP.Grocery.App.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
-    &quot;iOS.Grocery.App.executor&quot;: &quot;Run&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "UWP.Grocery.App.executor": "Run",
+    "git-widget-placeholder": "feature__uc13",
+    "iOS.Grocery.App.executor": "Run",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="UWP.Grocery.App">
     <configuration name="Grocery.App: Windows Machine" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Grocery.App/Grocery.App.csproj" />
@@ -113,16 +133,24 @@
         <option name="Build" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue=".NET Launch Settings Profile.Grocery.App: Windows Machine" />
+      <item itemvalue="Android.Grocery.App" />
+      <item itemvalue="iOS.Grocery.App" />
+      <item itemvalue="macOS.Grocery.App" />
+      <item itemvalue="UWP.Grocery.App" />
+    </list>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="43a4fe78-c2c8-4adf-a336-59b11b8c8b01" name="Changes" comment="" />
+      <changelist id="2f6bcdf9-95d7-4f5a-acaa-186bffce2f4a" name="Changes" comment="" />
       <created>1759170054331</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1759170054331</updated>
       <workItem from="1759170062004" duration="822000" />
       <workItem from="1759225697979" duration="7743000" />
+      <workItem from="1759428690825" duration="5792000" />
     </task>
     <servers />
   </component>

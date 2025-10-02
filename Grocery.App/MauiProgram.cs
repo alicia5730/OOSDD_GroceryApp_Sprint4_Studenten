@@ -6,6 +6,7 @@ using Grocery.Core.Interfaces.Services;
 using Grocery.Core.Interfaces.Repositories;
 using Grocery.Core.Data.Repositories;
 using CommunityToolkit.Maui;
+using Grocery.Core.Models;
 
 namespace Grocery.App
 {
@@ -33,7 +34,11 @@ namespace Grocery.App
             builder.Services.AddSingleton<IClientService, ClientService>();
             builder.Services.AddSingleton<IFileSaverService, FileSaverService>();
             builder.Services.AddSingleton<IBoughtProductsService, BoughtProductsService>();
-
+            builder.Services.AddSingleton(new Client(3, "user3", "user3@mail.com", "user3") 
+            { 
+                Role = Role.Admin 
+            });
+            
             builder.Services.AddSingleton<IGroceryListRepository, GroceryListRepository>();
             builder.Services.AddSingleton<IGroceryListItemsRepository, GroceryListItemsRepository>();
             builder.Services.AddSingleton<IProductRepository, ProductRepository>();
