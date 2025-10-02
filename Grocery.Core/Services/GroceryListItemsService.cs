@@ -60,6 +60,7 @@ namespace Grocery.Core.Services
         private IEnumerable<(int ProductId, int NrOfSells)> GroupProducts(List<GroceryListItem> items)
         {
             return items
+                .Where(i => i.Amount > 0) // ❗ filter: geen negatieve of nul aantallen
                 .GroupBy(i => i.ProductId)
                 .Select(g => (ProductId: g.Key, NrOfSells: g.Sum(i => i.Amount)));
         }
@@ -73,6 +74,10 @@ namespace Grocery.Core.Services
             foreach (var g in grouped.OrderByDescending(x => x.NrOfSells).Take(topX))
             {
                 var product = _productRepository.Get(g.ProductId);//Haalt product info dus naam en voorraad bijv.
+                
+                if (product == null) 
+                    continue; // ❗ skip producten die niet meer bestaan (TC11-07)
+                
                 result.Add(new BestSellingProducts( // maakt een nieuwe modelobject
                     g.ProductId, //Id van het product
                     product?.Name ?? "Onbekend",// product naam of onbekend als "null"
