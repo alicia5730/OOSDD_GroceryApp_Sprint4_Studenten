@@ -19,13 +19,21 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      # -------- Restore all projects --------
-      - name: Restore solution
-        run: dotnet restore Grocery.sln
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
 
-      # -------- Run Unit Tests --------
-      - name: Build for Tests
-        run: dotnet build Grocery.sln --no-restore --configuration Release
+      # Restore explicitly for win-x64
+      - name: Restore
+        run: dotnet restore Grocery.App/Grocery.App.csproj -r win-x64
+
+      # Build & test
+      - name: Build solution
+        run: dotnet build Grocery.sln --configuration Release --no-restore
 
       - name: Run Unit Tests
         run: dotnet test TestCore/TestCore.csproj --no-build --configuration Release --logger "trx;LogFileName=test_results.trx" --results-directory ./TestResults
@@ -37,36 +45,24 @@ jobs:
           name: TestResults
           path: ./TestResults
 
-      # -------- Build MAUI (Windows only, to avoid Mac/iOS issues) --------
-      - name: Build MAUI Windows
-        if: success()  # only if tests passed
-        run: dotnet publish Grocery.App/Grocery.App.csproj `
-              -c Release `
-              -f net8.0-windows10.0.19041.0 `
-              -r win-x64 `
-              --self-contained true `
-              -p:PublishReadyToRun=false `
-              -p:BuildForWindows=true `
-              -p:TargetFrameworkOverride=net8.0-windows10.0.19041.0 `
-              -o ./artifacts/windows
+      # Publish Windows app only after tests succeed
+      - name: Publish MAUI Windows
+        if: success()
+        run: dotnet publish Grocery.App/Grocery.App.csproj -c Release -f net8.0-windows10.0.19041.0 -r win-x64 --self-contained true -p:PublishReadyToRun=false -o ./artifacts/windows
 
-      - name: Upload Windows Artifact
+      - name: Upload Windows artifact
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: GroceryApp-Windows
           path: ./artifacts/windows
 
-      # -------- Build MAUI Android (APK) --------
-      - name: Build MAUI Android
+      # Android build (optional)
+      - name: Publish MAUI Android
         if: success()
-        run: dotnet publish Grocery.App/Grocery.App.csproj `
-              -c Release `
-              -f net8.0-android `
-              -p:AndroidPackageFormat=apk `
-              -o ./artifacts/android
+        run: dotnet publish Grocery.App/Grocery.App.csproj -c Release -f net8.0-android -p:AndroidPackageFormat=apk -o ./artifacts/android
 
-      - name: Upload Android Artifact
+      - name: Upload Android artifact
         if: success()
         uses: actions/upload-artifact@v4
         with:
