@@ -19,11 +19,11 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      # -------- Restore dependencies --------
+      # -------- Restore all projects --------
       - name: Restore solution
         run: dotnet restore Grocery.sln
 
-      # -------- Build & Run Unit Tests --------
+      # -------- Run Unit Tests --------
       - name: Build for Tests
         run: dotnet build Grocery.sln --no-restore --configuration Release
 
@@ -37,10 +37,18 @@ jobs:
           name: TestResults
           path: ./TestResults
 
-      # -------- Build MAUI Windows --------
+      # -------- Build MAUI (Windows only, to avoid Mac/iOS issues) --------
       - name: Build MAUI Windows
         if: success()  # only if tests passed
-        run: dotnet publish Grocery.App/Grocery.App.csproj -c Release -f net8.0-windows10.0.19041.0 -r win-x64 -p:PublishReadyToRun=false --self-contained true -o ./artifacts/windows
+        run: dotnet publish Grocery.App/Grocery.App.csproj `
+              -c Release `
+              -f net8.0-windows10.0.19041.0 `
+              -r win-x64 `
+              --self-contained true `
+              -p:PublishReadyToRun=false `
+              -p:BuildForWindows=true `
+              -p:TargetFrameworkOverride=net8.0-windows10.0.19041.0 `
+              -o ./artifacts/windows
 
       - name: Upload Windows Artifact
         if: success()
@@ -49,10 +57,14 @@ jobs:
           name: GroceryApp-Windows
           path: ./artifacts/windows
 
-      # -------- Build MAUI Android --------
+      # -------- Build MAUI Android (APK) --------
       - name: Build MAUI Android
-        if: success()  # only if tests passed
-        run: dotnet publish Grocery.App/Grocery.App.csproj -c Release -f net8.0-android -p:AndroidPackageFormat=apk -o ./artifacts/android
+        if: success()
+        run: dotnet publish Grocery.App/Grocery.App.csproj `
+              -c Release `
+              -f net8.0-android `
+              -p:AndroidPackageFormat=apk `
+              -o ./artifacts/android
 
       - name: Upload Android Artifact
         if: success()
