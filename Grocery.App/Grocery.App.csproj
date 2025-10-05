@@ -84,4 +84,23 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Grocery.Core.Data\Grocery.Core.Data.csproj" />
-    <ProjectReference Include="..\Grocery.Core\Grocery.Core.csproj"
+    <ProjectReference Include="..\Grocery.Core\Grocery.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiXaml Update="Views\BestSellingProductsView.xaml"><Generator>MSBuild:Compile</Generator></MauiXaml>
+    <MauiXaml Update="Views\BoughtProductsView.xaml"><Generator>MSBuild:Compile</Generator></MauiXaml>
+    <MauiXaml Update="Views\ChangeColorView.xaml"><Generator>MSBuild:Compile</Generator></MauiXaml>
+    <MauiXaml Update="Views\GroceryListItemsView.xaml"><Generator>MSBuild:Compile</Generator></MauiXaml>
+    <MauiXaml Update="Views\GroceryListsView.xaml"><Generator>MSBuild:Compile</Generator></MauiXaml>
+    <MauiXaml Update="Views\LoginView.xaml"><Generator>MSBuild:Compile</Generator></MauiXaml>
+    <MauiXaml Update="Views\ProductView.xaml"><Generator>MSBuild:Compile</Generator></MauiXaml>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Platforms\Windows\Package.appxmanifest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
