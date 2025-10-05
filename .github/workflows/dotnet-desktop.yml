@@ -19,8 +19,7 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      # (Optional) Speed up restores
-      - name: Cache NuGet
+      - name: Cache NuGet packages
         uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
@@ -28,30 +27,21 @@ jobs:
           restore-keys: |
             nuget-${{ runner.os }}-
 
-      # Install MAUI workloads needed to build Android/Windows
-      - name: Install MAUI workloads
-        run: |
-          dotnet workload install maui-android maui-windows --ignore-failed-sources
-          dotnet --info
+      # Restore the full solution (includes test projects)
+      - name: Restore Solution
+        run: dotnet restore OOSDD_GroceryApp_Sprint4_Studenten.sln
 
-      # Restore dependencies (solution or specific projects)
-      - name: Restore (App)
-        run: dotnet restore Grocery.App/Grocery.App.csproj
+      # 🔥 Only build the core and test assemblies, skip MAUI workloads
+      - name: Build Core Projects
+        run: dotnet build --configuration Release --no-restore
 
-      - name: Restore (Tests)
-        run: |
-          if (Test-Path "TestCore/TestCore.csproj") { dotnet restore TestCore/TestCore.csproj }
-
-      # ---------- Run unit tests & upload results ----------
+      # 🧪 Run unit tests
       - name: Run Unit Tests
-        if: ${{ hashFiles('TestCore/TestCore.csproj') != '' }}
-        run: |
-          dotnet test TestCore/TestCore.csproj `
-            --configuration Release `
-            --logger "trx;LogFileName=test_results.trx" `
-            --results-directory ./TestResults
+        run: dotnet test TestCore/TestCore.csproj --configuration Release --no-build --logger "trx;LogFileName=test_results.trx" --results-directory ./TestResults
 
-      - name: Upload Test Results (.trx)
-        if: always()  # upload even if tests fail
+      - name: Upload Test Results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
+          name: TestResults
+          path: ./TestResults
