@@ -1,9 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   	<!-- Disable unsupported targets on Windows CI -->
-  	<PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">
-    	<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
-    	<PublishReadyToRun>false</PublishReadyToRun>
-  	</PropertyGroup>
+	<!-- Platform-specific targeting -->
+	<PropertyGroup>
+	  <!-- Default for non-Windows systems (Mac dev machines) -->
+	  <TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('Windows'))">
+	    net8.0-android;net8.0-ios;net8.0-maccatalyst
+	  </TargetFrameworks>
+	
+	  <!-- Windows CI & local dev: no MacCatalyst or iOS -->
+	  <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+	    net8.0-android;net8.0-windows10.0.19041.0
+	  </TargetFrameworks>
+	</PropertyGroup>
+	
+	<!-- Runtime setup for Windows build -->
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">
+	  <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+	  <PublishReadyToRun>false</PublishReadyToRun>
+	</PropertyGroup>
 	<PropertyGroup>
 	    <TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
 	    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">
