@@ -40,6 +40,7 @@
   <!-- Runtime setup for Windows build -->
   <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <PlatformTarget>x64</PlatformTarget>
     <PublishReadyToRun>false</PublishReadyToRun>
   </PropertyGroup>
 
