@@ -27,11 +27,9 @@ jobs:
           restore-keys: |
             nuget-${{ runner.os }}-
 
-      # 🧹 Clean up before restore/build
       - name: Clean solution
         run: dotnet clean Grocery.sln
 
-      # 📦 Restore dependencies
       - name: Restore all projects
         run: |
           dotnet restore Grocery.Core/Grocery.Core.csproj
@@ -39,17 +37,12 @@ jobs:
           dotnet restore Grocery.App/Grocery.App.csproj
           dotnet restore TestCore/TestCore.csproj
 
-      # ⚙️ Build step (Windows x64 only)
       - name: Build solution
-        run: dotnet build Grocery.sln --configuration Release --no-restore --runtime win-x64
-        env:
-          DOTNET_CLI_TELEMETRY_OPTOUT: 1
+        run: dotnet build Grocery.sln --configuration Release --no-restore
 
-      # 🧪 Run Unit Tests (only continue if they pass)
       - name: Run Unit Tests
         run: dotnet test TestCore/TestCore.csproj --no-build --configuration Release --logger "trx;LogFileName=test_results.trx" --results-directory ./TestResults
 
-      # 📊 Upload test results
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4
@@ -57,10 +50,17 @@ jobs:
           name: TestResults
           path: ./TestResults
 
-      # 🪄 Only publish if tests succeeded
       - name: Publish MAUI Windows
         if: success()
-        run: dotnet publish Grocery.App/Grocery.App.csproj -c Release -f net8.0-windows10.0.19041.0 -r win-x64 --self-contained true -p:PublishReadyToRun=false -o ./artifacts/windows
+        run: |
+          dotnet publish Grocery.App/Grocery.App.csproj \
+            -c Release \
+            -f net8.0-windows10.0.19041.0 \
+            -r win-x64 \
+            --self-contained true \
+            -p:PublishReadyToRun=false \
+            -p:UseAppHost=true \
+            -o ./artifacts/windows
 
       - name: Upload Windows artifact
         if: success()
@@ -69,10 +69,15 @@ jobs:
           name: GroceryApp-Windows
           path: ./artifacts/windows
 
-      # 🧱 Android build (optional)
       - name: Publish MAUI Android
         if: success()
-        run: dotnet publish Grocery.App/Grocery.App.csproj -c Release -f net8.0-android -p:AndroidPackageFormat=apk -p:PublishReadyToRun=false -o ./artifacts/android
+        run: |
+          dotnet publish Grocery.App/Grocery.App.csproj \
+            -c Release \
+            -f net8.0-android \
+            -p:AndroidPackageFormat=apk \
+            -p:PublishReadyToRun=false \
+            -o ./artifacts/android
 
       - name: Upload Android artifact
         if: success()
