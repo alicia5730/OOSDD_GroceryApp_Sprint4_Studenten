@@ -27,14 +27,19 @@ jobs:
           restore-keys: |
             nuget-${{ runner.os }}-
 
-      # Restore explicitly for win-x64
-      - name: Restore
-        run: dotnet restore Grocery.App/Grocery.App.csproj -r win-x64
+      # ✅ Restore everything explicitly
+      - name: Restore all projects
+        run: |
+          dotnet restore Grocery.App/Grocery.App.csproj
+          dotnet restore Grocery.Core/Grocery.Core.csproj
+          dotnet restore Grocery.Core.Data/Grocery.Core.Data.csproj
+          dotnet restore TestCore/TestCore.csproj
 
-      # Build & test
+      # ✅ Build all projects
       - name: Build solution
         run: dotnet build Grocery.sln --configuration Release --no-restore
 
+      # ✅ Run Unit Tests
       - name: Run Unit Tests
         run: dotnet test TestCore/TestCore.csproj --no-build --configuration Release --logger "trx;LogFileName=test_results.trx" --results-directory ./TestResults
 
@@ -45,7 +50,7 @@ jobs:
           name: TestResults
           path: ./TestResults
 
-      # Publish Windows app only after tests succeed
+      # ✅ Publish Windows app
       - name: Publish MAUI Windows
         if: success()
         run: dotnet publish Grocery.App/Grocery.App.csproj -c Release -f net8.0-windows10.0.19041.0 -r win-x64 --self-contained true -p:PublishReadyToRun=false -o ./artifacts/windows
@@ -57,10 +62,10 @@ jobs:
           name: GroceryApp-Windows
           path: ./artifacts/windows
 
-      # Android build (optional)
+      # ✅ Publish Android app
       - name: Publish MAUI Android
         if: success()
-        run: dotnet publish Grocery.App/Grocery.App.csproj -c Release -f net8.0-android -p:AndroidPackageFormat=apk -o ./artifacts/android
+        run: dotnet publish Grocery.App/Grocery.App.csproj -c Release -f net8.0-android -p:AndroidPackageFormat=apk -p:PublishReadyToRun=false -o ./artifacts/android
 
       - name: Upload Android artifact
         if: success()
