@@ -1,4 +1,4 @@
-name: Build & Test MAUI App
+name: Build & Test Grocery App
 
 on:
   push:
@@ -27,17 +27,14 @@ jobs:
           restore-keys: |
             nuget-${{ runner.os }}-
 
-      # Restore the full solution (includes test projects)
-      - name: Restore Solution
-        run: dotnet restore OOSDD_GroceryApp_Sprint4_Studenten.sln
+      - name: Restore solution
+        run: dotnet restore Grocery.sln
 
-      # 🔥 Only build the core and test assemblies, skip MAUI workloads
-      - name: Build Core Projects
-        run: dotnet build --configuration Release --no-restore
+      - name: Build solution
+        run: dotnet build Grocery.sln --no-restore --configuration Release
 
-      # 🧪 Run unit tests
       - name: Run Unit Tests
-        run: dotnet test TestCore/TestCore.csproj --configuration Release --no-build --logger "trx;LogFileName=test_results.trx" --results-directory ./TestResults
+        run: dotnet test TestCore/TestCore.csproj --no-build --configuration Release --logger "trx;LogFileName=test_results.trx" --results-directory ./TestResults
 
       - name: Upload Test Results
         if: always()
